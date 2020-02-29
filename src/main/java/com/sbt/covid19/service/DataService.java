@@ -79,18 +79,7 @@ public class DataService {
 
 	private List<CovidData> fetchCovid19DataByCountry(String dataUrl) throws IOException {
 
-		List<CovidData> listOfNewData = new ArrayList<CovidData>();
-		String readData = restTemplate.getForObject(dataUrl, String.class);
-		StringReader csvResReader = new StringReader(readData);
-		Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvResReader);
-		for (CSVRecord record : records) {
-			int currDayCases = Integer.parseInt(record.get(record.size() - 1));
-			int prevDayCases = Integer.parseInt(record.get(record.size() - 2));
-			listOfNewData.add(new CovidData(record.get("Province/State"), record.get("Country/Region"), currDayCases,
-					currDayCases - prevDayCases));
-		}
-
-		List<CovidData> totalCasesByCountry = listOfNewData.stream()
+		List<CovidData> totalCasesByCountry = this.listOfData.stream()
 				.collect(Collectors.groupingBy(data -> data.getCountry())).entrySet().stream()
 				.map(e -> e.getValue().stream().reduce(
 						(cvd1, cvd2) -> new CovidData(cvd1.getCountry(), cvd1.getTotalCases() + cvd2.getTotalCases())))

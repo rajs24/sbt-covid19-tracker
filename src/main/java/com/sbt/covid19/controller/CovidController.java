@@ -1,6 +1,5 @@
 package com.sbt.covid19.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,6 @@ public class CovidController {
 		model.addAttribute("totalConfirmedReportedCases", getTotalReportedCase(listOfConfirmedCasesData));
 		model.addAttribute("totalConfirmedReportedNewCases", getTotalReportedNewCase(listOfConfirmedCasesData));
 		model.addAttribute("confirmedCasesByCountry", listOfConfirmedCasesByCountry);
-		System.out.println(listOfConfirmedCasesByCountry);
 
 		// get total death cases of covid data
 		model.addAttribute("covidDeathListOfData", listOfDeathCasesData);
