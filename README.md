@@ -1,6 +1,6 @@
 # Getting Started
 # Spring Boot - Coronavirus COVID-19 Live Tracker Application
-### This project developed using the following Spring boot, Thymeleaf, Datatable CSV, RestTemplate. 
+### This project developed using the following Spring boot, Thymeleaf, Datatable, CSV, RestTemplate. 
 * The app used to fetch the live data of Coronavirus from JHU CCSE
 * This web application displays the details of total confirmed cases, total death cases, and recovered cases around the world.
 
