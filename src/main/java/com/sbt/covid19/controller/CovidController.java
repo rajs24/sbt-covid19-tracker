@@ -12,13 +12,12 @@ import com.sbt.covid19.models.CovidData;
 import com.sbt.covid19.service.DataService;
 
 @Controller
-@RequestMapping("/api/covid")
 public class CovidController {
 
 	@Autowired
 	private DataService dataService;
 
-	@GetMapping("/home")
+	@GetMapping("/")
 	public String home(Model model) {
 		List<CovidData> listOfConfirmedCasesData = dataService.getListOfConfirmedCasesData();
 		List<CovidData> listOfDeathCasesData = dataService.getListOfDeathsData();
