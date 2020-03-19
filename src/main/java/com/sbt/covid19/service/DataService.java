@@ -70,8 +70,14 @@ public class DataService {
 		for (CSVRecord record : records) {
 			int currDayCases = Integer.parseInt(record.get(record.size() - 1));
 			int prevDayCases = Integer.parseInt(record.get(record.size() - 2));
-			listOfNewData.add(new CovidData(record.get("Province/State"), record.get("Country/Region"), currDayCases,
-					currDayCases - prevDayCases));
+			int check = 0;
+			if (currDayCases < prevDayCases) {
+				check = 0;
+			} else {
+				check = currDayCases - prevDayCases;
+			}
+			listOfNewData.add(
+					new CovidData(record.get("Province/State"), record.get("Country/Region"), currDayCases, check));
 		}
 		listOfNewData.sort(Comparator.comparingInt(CovidData::getTotalCases).reversed());
 		return this.listOfData = listOfNewData;
@@ -121,4 +127,5 @@ public class DataService {
 //		"0 0/30 8-10 * * *" = 8:00, 8:30, 9:00, 9:30, 10:00 and 10:30 every day.
 //		"0 0 9-17 * * MON-FRI" = on the hour nine-to-five weekdays
 //		"0 0 0 25 12 ?" = every Christmas Day at midnight
+
 }
