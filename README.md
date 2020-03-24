@@ -5,9 +5,8 @@
 * This web application displays the details of total confirmed cases, total death cases, and recovered cases around the world.
 
 ## Access the covid-19 live tracker application
-```
-https://covid19livetracker.herokuapp.com/
-```
+[https://covid19livetracker.herokuapp.com/](https://covid19livetracker.herokuapp.com/)
+
 
 ## Step 1 - Download the Live Tracker project
 
