@@ -24,8 +24,15 @@ public class DataService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	private static String DATA_COVID_CONFIRMED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
-	private static String DATA_COVID_DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv";
+	// ---DEPRICATED WARNING---
+	// The following raw files below will no longer be updated. 24/03/2020
+	// private static String DATA_COVID_CONFIRMED_URL =
+	// "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
+	// private static String DATA_COVID_DEATHS_URL =
+	// "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv";
+
+	private static String DATA_COVID_CONFIRMED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+	private static String DATA_COVID_DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
 	private static String DATA_COVID_RECOVERED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv";
 
 	private List<CovidData> listOfData = new ArrayList<CovidData>();
@@ -67,17 +74,32 @@ public class DataService {
 		String readData = restTemplate.getForObject(dataUrl, String.class);
 		StringReader csvResReader = new StringReader(readData);
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvResReader);
+		int currDayCases = 0;
+		int prevDayCases = 0;
+		int prevDaycheck = 0;
+
 		for (CSVRecord record : records) {
-			int currDayCases = Integer.parseInt(record.get(record.size() - 1));
-			int prevDayCases = Integer.parseInt(record.get(record.size() - 2));
-			int check = 0;
-			if (currDayCases < prevDayCases) {
-				check = 0;
+
+			if (record.get(record.size() - 1) != null && record.get(record.size() - 1).length() > 0) {
+				currDayCases = Integer.parseInt(record.get(record.size() - 1));
 			} else {
-				check = currDayCases - prevDayCases;
+				currDayCases = 0;
 			}
-			listOfNewData.add(
-					new CovidData(record.get("Province/State"), record.get("Country/Region"), currDayCases, check));
+
+			if (record.get(record.size() - 2) != null && record.get(record.size() - 2).length() > 0) {
+				prevDayCases = Integer.parseInt(record.get(record.size() - 2));
+			} else {
+				prevDayCases = 0;
+			}
+
+			if (currDayCases < prevDayCases) {
+				prevDaycheck = 0;
+			} else {
+				prevDaycheck = currDayCases - prevDayCases;
+			}
+
+			listOfNewData.add(new CovidData(record.get("Province/State"), record.get("Country/Region"), currDayCases,
+					prevDaycheck));
 		}
 		listOfNewData.sort(Comparator.comparingInt(CovidData::getTotalCases).reversed());
 		return this.listOfData = listOfNewData;
