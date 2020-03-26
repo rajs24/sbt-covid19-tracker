@@ -30,10 +30,12 @@ public class DataService {
 	// "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
 	// private static String DATA_COVID_DEATHS_URL =
 	// "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv";
+	// private static String DATA_COVID_RECOVERED_URL =
+	// "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv";
 
 	private static String DATA_COVID_CONFIRMED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 	private static String DATA_COVID_DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
-	private static String DATA_COVID_RECOVERED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv";
+	private static String DATA_COVID_RECOVERED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv";
 
 	private List<CovidData> listOfData = new ArrayList<CovidData>();
 	private List<CovidData> listOfConfirmedCasesData = new ArrayList<CovidData>();
@@ -98,8 +100,7 @@ public class DataService {
 				prevDaycheck = currDayCases - prevDayCases;
 			}
 
-			listOfNewData.add(new CovidData(record.get("Province/State"), record.get("Country/Region"), currDayCases,
-					prevDaycheck));
+			listOfNewData.add(new CovidData(record.get(0), record.get(1), currDayCases, prevDaycheck));
 		}
 		listOfNewData.sort(Comparator.comparingInt(CovidData::getTotalCases).reversed());
 		return this.listOfData = listOfNewData;
